@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#4f46e5" />
+  <meta name="description" content="صفحه آفلاین هوش" />
+  <title>اتصال اینترنت برقرار نیست — هوش</title>
+  <style>
+    /* FIX(v8): @font-face با data-URI خالی حذف شد — مرجع فونت شکسته بود که
+       هرگز لود نمی‌شد. Vazirmatn اگر در کش SW باشد استفاده می‌شود؛ در غیر این
+       صورت فونت سیستمی امن (Tahoma در ویندوز برای فارسی) fallback است. */
+    :root {
+      --indigo-50:  #eef2ff;
+      --indigo-100: #e0e7ff;
+      --indigo-200: #c7d2fe;
+      --indigo-500: #6366f1;
+      --indigo-600: #4f46e5;
+      --indigo-700: #4338ca;
+      --indigo-900: #312e81;
+      --slate-50:   #f8fafc;
+      --slate-100:  #f1f5f9;
+      --slate-600:  #475569;
+      --slate-700:  #334155;
+      --slate-900:  #0f172a;
+      --white:      #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      min-height: 100vh;
+    }
+
+    body {
+      font-family: 'Vazirmatn', 'Tahoma', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, var(--indigo-50) 0%, var(--slate-50) 100%);
+      color: var(--slate-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      direction: rtl;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 30rem;
+      text-align: center;
+      background: var(--white);
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 60px -20px rgba(79, 70, 229, 0.25),
+                  0 4px 12px -2px rgba(15, 23, 42, 0.08);
+      padding: 2.5rem 1.75rem;
+      border: 1px solid var(--indigo-100);
+    }
+
+    /* لوگوی هوش (SVG inline) */
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo-600), var(--indigo-700));
+      box-shadow: 0 8px 24px -8px rgba(79, 70, 229, 0.45);
+      margin-bottom: 1.25rem;
+    }
+
+    .logo svg {
+      width: 2.5rem;
+      height: 2.5rem;
+      color: var(--white);
+    }
+
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--indigo-700);
+      margin: 0 0 0.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-en {
+      font-size: 0.75rem;
+      color: var(--slate-600);
+      font-weight: 500;
+      margin-bottom: 1.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    .icon-offline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      background: var(--indigo-50);
+      color: var(--indigo-600);
+      margin-bottom: 1rem;
+    }
+
+    .icon-offline svg {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    p.message {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--slate-600);
+      margin: 0 0 1.5rem;
+      max-width: 24rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .retry-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      background: linear-gradient(135deg, var(--indigo-600), var(--indigo-700));
+      color: var(--white);
+      border: none;
+      border-radius: 0.75rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 200ms ease;
+      box-shadow: 0 4px 12px -2px rgba(79, 70, 229, 0.35);
+      min-height: 48px;
+    }
+
+    .retry-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px -2px rgba(79, 70, 229, 0.45);
+      background: linear-gradient(135deg, var(--indigo-700), var(--indigo-900));
+    }
+
+    .retry-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px -2px rgba(79, 70, 229, 0.4);
+    }
+
+    .retry-btn:focus-visible {
+      outline: 3px solid var(--indigo-200);
+      outline-offset: 2px;
+    }
+
+    .retry-btn svg {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+
+    .retry-btn[disabled] {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-line {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--slate-600);
+      min-height: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .status-line .dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: var(--slate-600);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .status-line.online .dot {
+      background: #10b981;
+      animation: none;
+    }
+
+    .status-line.offline .dot {
+      background: var(--indigo-600);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .footer-note {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--slate-100);
+      font-size: 0.75rem;
+      color: var(--slate-600);
+      line-height: 1.6;
+    }
+
+    .footer-note a {
+      color: var(--indigo-600);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 2rem 1.25rem;
+        border-radius: 1.25rem;
+      }
+      h1 {
+        font-size: 1.25rem;
+      }
+      p.message {
+        font-size: 0.875rem;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+        color: #e2e8f0;
+      }
+      .container {
+        background: #1e293b;
+        border-color: #312e81;
+        box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.5);
+      }
+      h1 { color: #f1f5f9; }
+      p.message { color: #94a3b8; }
+      .footer-note {
+        border-top-color: #334155;
+        color: #94a3b8;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main">
+    <!-- لوگوی هوش -->
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 3h18v4H3z" />
+        <path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7" />
+        <path d="M9 13h6M9 17h4" />
+      </svg>
+    </div>
+    <h2 class="brand">هوش</h2>
+    <p class="brand-en">Hoosh Accounting Platform</p>
+
+    <!-- آیکون آفلاین -->
+    <div class="icon-offline" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="1" y1="1" x2="23" y2="23" />
+        <path d="M16.72 11.06A10.94 10.94 0 0123 12.55" />
+        <path d="M5 12.55a10.94 10.94 0 015.34-2.06" />
+        <path d="M1.42 9a16 16 0 0121.16 0" />
+        <path d="M8.53 16.11a6 6 0 016.95 0" />
+        <line x1="12" y1="20" x2="12.01" y2="20" />
+      </svg>
+    </div>
+
+    <h1>آفلاین هستید</h1>
+    <p class="message">
+      اتصال اینترنت برقرار نیست. داده‌های ذخیره‌شده در دسترس است.
+      آخرین تغییرات شما به‌صورت محلی ذخیره شده و پس از اتصال مجدد همگام‌سازی می‌شوند.
+    </p>
+
+    <button type="button" class="retry-btn" id="retryBtn" onclick="retryConnection()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="23 4 23 10 17 10" />
+        <polyline points="1 20 1 14 7 14" />
+        <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+      </svg>
+      <span>تلاش مجدد</span>
+    </button>
+
+    <div class="status-line offline" id="statusLine" role="status" aria-live="polite">
+      <span class="dot" aria-hidden="true"></span>
+      <span id="statusText">در حال بررسی اتصال…</span>
+    </div>
+
+    <p class="footer-note">
+      هوش — نرم‌افزار حسابداری هوشمند ابری<br />
+      در صورت اتصال مجدد، به‌صورت خودکار به برنامه بازمی‌گردید.
+    </p>
+  </main>
+
+  <script>
+    // بررسی اتصال و تلاش مجدد خودکار
+    function updateOnlineStatus() {
+      var isOnline = navigator.onLine;
+      var statusLine = document.getElementById('statusLine');
+      var statusText = document.getElementById('statusText');
+      var retryBtn = document.getElementById('retryBtn');
+
+      if (isOnline) {
+        statusLine.className = 'status-line online';
+        statusText.textContent = 'اتصال برقرار است. در حال بازگشت…';
+        retryBtn.disabled = true;
+        // تلاش برای بازگشت به صفحه‌ی اصلی
+        setTimeout(function() {
+          window.location.href = '/';
+        }, 800);
+      } else {
+        statusLine.className = 'status-line offline';
+        statusText.textContent = 'اتصال اینترنت برقرار نیست';
+        retryBtn.disabled = false;
+      }
+    }
+
+    function retryConnection() {
+      var statusText = document.getElementById('statusText');
+      var statusLine = document.getElementById('statusLine');
+      statusText.textContent = 'در حال تلاش برای اتصال…';
+      statusLine.className = 'status-line';
+
+      // تلاش برای fetch یک فایل کوچک از هم‌خانواده‌ی origin
+      fetch('/', { method: 'HEAD', cache: 'no-store' })
+        .then(function() {
+          // موفق — به صفحه اصلی بازگرد
+          window.location.href = '/';
+        })
+        .catch(function() {
+          // همچنان آفلاین
+          updateOnlineStatus();
+        });
+    }
+
+    // گوش دادن به رویدادهای آنلاین/آفلاین
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    // بررسی اولیه
+    updateOnlineStatus();
+
+    // تلاش مجدد خودکار هر ۱۵ ثانیه در حالت آفلاین
+    setInterval(function() {
+      if (!navigator.onLine) {
+        // فقط اگر دکمه غیرفعال نبود (یعنی در حالت آفلاین)
+        var retryBtn = document.getElementById('retryBtn');
+        if (!retryBtn.disabled) {
+          retryConnection();
+        }
+      }
+    }, 15000);
+  </script>
+</body>
+</html>
